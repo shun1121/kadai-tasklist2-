@@ -83,9 +83,15 @@ class TasksController extends Controller
         //
         $task = Task::findOrFail($id);
         
-        return view('tasks.show', [
+        // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を削除
+        if (\Auth::id() === $micropost->user_id) {
+            return view('tasks.show', [
             'task' => $task,
         ]);
+        } else {
+            return redirect('/');
+        }
+        
     }
 
     /**
@@ -99,9 +105,14 @@ class TasksController extends Controller
         //
         $task = Task::findOrFail($id);
         
-        return view('tasks.edit', [
+        // 認証済みユーザ（閲覧者）がその投稿の所有者である場合は、投稿を削除
+        if (\Auth::id() === $micropost->user_id) {
+            return view('tasks.edit', [
             'task' => $task,
         ]);
+        } else {
+            return redirect('/');
+        }  
     }
 
     /**
